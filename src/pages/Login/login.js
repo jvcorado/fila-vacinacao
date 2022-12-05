@@ -9,6 +9,7 @@ export const Container = styled.form`
     display: flex;
     margin: auto;
 
+
     @media (max-width:560px){
         flex-direction: column;
         width: 90vw;

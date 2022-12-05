@@ -1,6 +1,6 @@
 import { Header } from './header'
 import { useNavigate } from 'react-router-dom';
-import { Cadastrar, Excluir, Visualizar, Home } from '../../components';
+import { Excluir } from '../../components';
 import { AiOutlineUserAdd, AiOutlineUserDelete, AiOutlineTeam, AiOutlineHome } from "react-icons/ai";
 
 
@@ -26,18 +26,24 @@ export const Cabecalho = ()=>{
         navigate("/visualizarPaciente", { replace:true })
     }
 
+    function handleVacinarPaciente(){
+        navigate("/vacinarPaciente", { replace:true })
+    }
+
     return(
         <Header>
 
-            <Home onClick={handleHome}><AiOutlineHome size={24}/>
-            </Home>
+            <button onClick={handleHome}><AiOutlineHome size={24}/>
+            </button>
 
-            <Cadastrar onClick={handleCadastrarPaciente}><AiOutlineUserAdd size={24}/>
-            </Cadastrar>
+            <button onClick={handleCadastrarPaciente}><AiOutlineUserAdd size={24}/>
+            </button>
 
-            <Excluir onClick={handleExcluirPaciente}><AiOutlineUserDelete size={24}/></Excluir>
+            <button onClick={handleExcluirPaciente}><AiOutlineUserDelete size={24}/></button>
+            
+            <button onClick={handleVisualizarPaciente}><AiOutlineTeam size={24}/></button>
 
-            <Visualizar onClick={handleVisualizarPaciente}><AiOutlineTeam size={24}/></Visualizar>
+            <button onClick={handleVacinarPaciente}><AiOutlineTeam size={24}/></button>
         </Header>
     )
 }

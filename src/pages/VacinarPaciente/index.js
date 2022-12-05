@@ -3,55 +3,35 @@ import { useEffect, useState } from 'react'
 import { toast } from 'react-toastify';
 import { db } from '../../firebaseConnection';
 import {
-    getDocs,
     collection,
     query,
-    orderBy,
     doc,
-    onSnapshot,
-    updateDoc
+    orderBy,
+    getDocs,
+    updateDoc,
+    startAt,
+    endAt,
 } from 'firebase/firestore';
+
 import { Cabecalho } from '../../components/Header'
 
-export const VisualizarPaciente = ()=>{
 
-    let lista = [];
+export const VacinarPaciente = ()=>{
+
+    const lista = [];
     const pacientesRef = collection(db, 'pacientes')
-    const queryRef = query(pacientesRef, orderBy("idade", "desc"))
-    const [pacientes, setPacientes] = useState([])
+
+    //filtrado os vacinados === não
+    const vacinadosRef= query(pacientesRef, orderBy("vacinado"),startAt('não'),endAt('não'))
+
     const [vacinado, setVacinado] = useState([])
 
+    //carregando apenas os pacientes não vacinados
     useEffect(()=>{
 
-        const unsub = onSnapshot(queryRef, (snapshot)=>{
-            let lista = [];
+        function loadPacientesNãoVacinado(){
 
-            snapshot.forEach((doc)=>{
-                lista.push(
-                    {
-                        id:doc.id,
-                        nome: doc.data().nome,
-                        telefone:doc.data().telefone,
-                        endereco:doc.data().endereco,
-                        cpf:doc.data().cpf,
-                        email:doc.data().email,
-                        idade:doc.data().idade,
-                        vacinado:doc.data().vacinado
-                    }
-                )
-            })
-
-            setPacientes(lista);
-        })
-
-    },[])
-
-    useEffect(()=>{
-
-        function loadPacientes(){
-
-            getDocs(queryRef).then((snapshot)=>{
-                let lista = [];
+            getDocs(vacinadosRef).then((snapshot)=>{
 
                 snapshot.forEach((doc)=>{
                     lista.push(
@@ -68,25 +48,47 @@ export const VisualizarPaciente = ()=>{
                     )
                 })
 
-                setPacientes(lista)
+                setVacinado(lista)
                 console.log('buscou')
             })
+    }
+
+    loadPacientesNãoVacinado();
+
+    },[vacinado])
+
+    async function handleVacinar(id){
+
+        const docRef = doc(db, 'pacientes', id)
+        await updateDoc(docRef,{
+            vacinado:'sim'
+        }) 
+        .then(()=>{ 
+            toast.success('Paciente Vacinado com Sucesso')   
+            console.log('paciente vacinado')
+        })
+        .catch(()=>{
+            console.log('Erro ao vacinar paciente')
+        })
 
     }
 
-    loadPacientes();
 
-    },[])
+
+
+
+
+   
 
     return(
         <Main>
             <Cabecalho></Cabecalho>
             <View>
-                <h1>Visualizar Pacientes</h1>
+                <h1>Vacinar Pacientes</h1>
 
-                {pacientes.length === 0 && <span>Nenhum paciente cadastrado na fila </span>}
+                {vacinado.length === 0 && <span>Nenhum paciente para ser vacinado na fila </span>}
 
-                {pacientes.map((item, index) =>(
+                {vacinado.map((item, index) =>(
                     <Listar key={index}>
                         <p>Nome: {item.nome}</p>
                         <p>Telefone: {item.telefone}</p>
@@ -95,6 +97,7 @@ export const VisualizarPaciente = ()=>{
                         <p>Email: {item.email}</p>
                         <p>Idade: {item.idade} anos</p>
                         <p>Vacinado: {item.vacinado}</p>
+                        <Update onClick={()=>handleVacinar(item.id)}>Vacinar</Update>
                     </Listar>
                 ))}
             </View>

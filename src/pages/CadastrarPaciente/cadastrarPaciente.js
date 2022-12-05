@@ -4,23 +4,25 @@ export const Container = styled.form`
 
    display: flex;
    align-items: center;
+   justify-content: center;
    flex-direction: column;
    background-color: white;
    gap: 15px;
-   width: 55%;
-   height: 60%;
-   padding-top: 50px;
-   border-radius: 20px;
+   width: 100%;
+   height: 100%;
+   border-radius: 20px 0 0 20px;
    color: black;
    margin: auto;
 
-   input,button{
+   input{
       width: 50vw;
-      padding: 10px;
-      padding-left: 0;
+      padding: 15px;
+      padding-left: 6px;
       border: none;
-      border-bottom: 2px solid black;
+      border-radius: 5px;
       outline: none;   
+      background-color: #E8F0FE;
+      font-size: 1.2rem;
    }
 
    button{
@@ -38,13 +40,12 @@ export const Container = styled.form`
    }
 
    @media (max-width:560px) {
-      justify-content: center;
-      margin-top: 100px;
-      width: 90%;
-      height: auto;
-      padding-bottom: 30px;
-      
-      
+      padding-top: 30px;
+      justify-content: flex-start;
+      width: 100%;
+      height: 100%;
+      border-radius: 0 0 20px 20px;
+   
       input{
          border-radius: 0;
       }

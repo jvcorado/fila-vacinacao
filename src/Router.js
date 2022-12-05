@@ -5,6 +5,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import { CadastrarPaciente } from './pages/CadastrarPaciente';
 import { ExcluirPaciente } from './pages/ExcluirPaciente';
 import { VisualizarPaciente } from './pages/VizualizarPaciente';
+import { VacinarPaciente } from './pages/VacinarPaciente';
 import { Private } from "./routes/private";
 
 
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
   {
     path:'/visualizarPaciente',
     element:<Private><VisualizarPaciente/></Private>  
+  },
+  {
+    path:'/vacinarPaciente',
+    element:<Private><VacinarPaciente/></Private>  
   }
 ])
   

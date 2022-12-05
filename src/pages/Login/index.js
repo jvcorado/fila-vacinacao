@@ -56,7 +56,6 @@ export const Login = ()=>{
                             onChange={(e)=>setPassword(e.target.value)}
                             placeholder='Digite sua senha'/>
                         <Acessar type='submit'>Acessar</Acessar>
-                        <Sair onClick={()=>{}}>Sair</Sair>
                 </BoxOne>
                 <BoxTwo>
                     <img src={imgLogin} alt="escudo saúde" />

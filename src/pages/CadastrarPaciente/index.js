@@ -9,8 +9,6 @@ import {
     onSnapshot,
     query,
     orderBy,
-    doc,
-    deleteDoc
 } from 'firebase/firestore';
 import { Cabecalho } from '../../components/Header';
 
@@ -19,7 +17,10 @@ export const CadastrarPaciente = ()=>{
     const [nome, setNome] = useState("");
     const [telefone, setTelefone] = useState("(11) 9 4444-5555");
     const [endereco, setEndereco] = useState("Logradouro 001");
+    const [cpf, setCpf] = useState("5555-555507");
+    const [email, setEmail] = useState("paciente22@gmail.com");
     const [idade, setIdade] = useState();
+    const [vacinado, setVacinado] = useState('não');
 
     const [pacientes, setPacientes] = useState([])
 
@@ -38,7 +39,11 @@ export const CadastrarPaciente = ()=>{
                         nome:doc.data().nome,
                         telefone:doc.data().telefone,
                         endereco:doc.data().endereco,
+                        cpf:doc.data().cpf,
+                        email:doc.data().email,
                         idade:doc.data().idade,
+                        vaciando:doc.data().vacinado,
+                
                     }
                 )
             })
@@ -53,7 +58,7 @@ export const CadastrarPaciente = ()=>{
     async function handleCadastrar(e){
         e.preventDefault();
 
-        if(nome === "" || telefone === "" || endereco === "" || idade === ""){
+        if(nome === "" || telefone === "" || endereco === "" || cpf === "" || email === "" || idade === ""){
             toast.warn("Preencha todos os campos!")
             return;
         }
@@ -62,8 +67,11 @@ export const CadastrarPaciente = ()=>{
             nome:nome,
             telefone:telefone,
             endereco:endereco,
-            idade:idade,
-            created: new Date(),
+            cpf:cpf,
+            email:email,
+            idade:parseInt(idade),
+            vacinado:vacinado,
+            created: new Date()
         })
         .then(()=>{
             setNome("")
@@ -103,12 +111,24 @@ export const CadastrarPaciente = ()=>{
                 placeholder='Endereço:' />
 
                 <input 
+                type="text"
+                value={cpf}
+                onChange={(e)=>setCpf(e.target.value)}
+                placeholder='CPF:' />
+
+                <input 
+                type="email"
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
+                placeholder='Email:' />
+
+                <input 
                 type="number" 
                 value={idade}
                 min='1'
                 onChange={(e)=>setIdade(e.target.value)}
                 placeholder='Idade:' />
-
+            
                 <Acessar type='submit'>Cadastrar</Acessar>
                     
             </Container>
